@@ -11,7 +11,7 @@ namespace PeriodicBackup
 {
     class Program
     {
-        private static FileInfo originalFile;
+        private static string originalFileName;
         private static string outputDirectory;
         private static DateTime lastChange;
 
@@ -36,7 +36,8 @@ namespace PeriodicBackup
                 return;
             }
 
-            originalFile = new FileInfo(args[1]);
+            originalFileName = args[1];
+            var originalFile = new FileInfo(originalFileName);
 
             if (args.Length > 2)
             {
@@ -53,7 +54,6 @@ namespace PeriodicBackup
             else
             {
                 outputDirectory = Path.Combine(originalFile.DirectoryName, "PeriodicBackup");
-                Directory.CreateDirectory(outputDirectory);
             }
 
             Console.WriteLine("Periodic backups of '{0}' every {1} minutes to '{2}' started", originalFile.Name, minutes, outputDirectory);
@@ -66,9 +66,13 @@ namespace PeriodicBackup
 
         static void Tick(object o)
         {
+            var originalFile = new FileInfo(originalFileName);
             if (originalFile.LastWriteTime != lastChange)
             {
                 Console.WriteLine("Creating backup in {0}", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
+
+                if (!Directory.Exists(outputDirectory))
+                    Directory.CreateDirectory(outputDirectory);
 
                 using (FileStream inFile = originalFile.OpenRead())
                 {
