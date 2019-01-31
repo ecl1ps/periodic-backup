@@ -1,3 +1,5 @@
 PeriodicBackup/bin/
 PeriodicBackup/obj/
 *.suo
+/.vs/
+/packages/
