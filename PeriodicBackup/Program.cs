@@ -109,7 +109,7 @@ namespace PeriodicBackup
             foreach (var i in info)
                 package.AddFile(i.FileInfo);
 
-            package.Pack(Path.Combine(outputDirectory, string.Format("{0}-{1}{2}.gz", outputFileName, now, outputExtension)), 6);
+            package.Pack(Path.Combine(outputDirectory, string.Format("{0}-{1}{2}.zip", outputFileName, now, outputExtension)), 6);
 
             foreach (var i in info)
                 i.BackupInfo.LastChange = i.FileInfo.LastWriteTime;
